@@ -6,7 +6,7 @@ App Flutter para monitorar o nível de bateria do dispositivo. Se a carga estive
 
 - Mostra o nível atual da bateria
 - Alerta com Snackbar quando < 20%
-- Botão que abre seu perfil no GitHub
+- Botão que abre meu perfil no GitHub
 
 ## 🔧 Como rodar
 
