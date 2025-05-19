@@ -30,25 +30,28 @@ class _BatteryMonitorPageState extends State<BatteryMonitorPage> {
   @override
   void initState() {
     super.initState();
-    _checkBatteryLevel();
+    _startBatteryMonitoring();
   }
 
-  Future<void> _checkBatteryLevel() async {
-    final level = await _battery.batteryLevel;
-    setState(() {
-      _batteryLevel = level;
-    });
-
-    if (level < 20) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('⚠️ Bateria fraca: $_batteryLevel%'),
-            backgroundColor: Colors.red,
-          ),
-        );
+  // Função que inicia a escuta do nível da bateria em tempo real
+  void _startBatteryMonitoring() {
+    _battery.onBatteryStateChanged.listen((BatteryState state) async {
+      final level = await _battery.batteryLevel;
+      setState(() {
+        _batteryLevel = level;
       });
-    }
+
+      if (_batteryLevel < 20) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('⚠️ Bateria fraca: $_batteryLevel%'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
+      }
+    });
   }
 
   Future<void> _openGitHubProfile() async {
